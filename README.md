@@ -1,7 +1,7 @@
 # AETHERION // SOVEREIGN_OS
 
 <div align="center">
-  <img src="https://via.placeholder.com/800x200/0a0a0a/ffffff?text=AETHERION" alt="Aetherion Banner" width="100%" style="border-radius: 8px; border: 1px solid #222;">
+  <img src="[https://via.placeholder.com/800x200/0a0a0a/ffffff?text=AETHERION](https://i.imgur.com/9pGFMTN.jpeg)" alt="Aetherion Banner" width="100%" style="border-radius: 8px; border: 1px solid #222;">
   <br><br>
   <strong>A cinematic single-page landing experience for the mythical nation of Aetherion</strong>
   <br>
