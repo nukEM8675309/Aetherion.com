@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AETHERION // SOVEREIGN_OS v8.0 (Locked Momentum)</title>
+    <style>
+        :root {
+            --bg: #161618; 
+            --fg: #ffffff;
+            --muted: #666666;
+            --border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(15, 15, 16, 0.7);
+            --y: #ffcc00; --g: #00cc66; --b: #0066ff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg); color: var(--fg);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow-x: hidden; line-height: 1.5; cursor: none;
+            overscroll-behavior: none; 
+        }
+
+        @media (hover: none) and (pointer: coarse) { body { cursor: auto; } * { cursor: auto !important; } }
+
+        /* --- SMOOTH SCROLL WRAPPER --- */
+        #smooth-wrapper { position: fixed; top: 0; left: 0; width: 100%; will-change: transform; overflow: hidden; }
+
+        /* --- LIQUID OBSIDIAN CANVAS & SVG GOO FILTER --- */
+        #ink-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; filter: url('#goo'); }
+        body::before { content: " "; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E"); z-index: -1; pointer-events: none; }
+        body::after { content: " "; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%); background-size: 100% 3px; z-index: 9998; pointer-events: none; opacity: 0.3; }
+
+        .mono { font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.75rem; color: var(--muted); }
+
+        /* --- CUSTOM CURSOR --- */
+        #cursor-dot { position: fixed; top: 0; left: 0; width: 4px; height: 4px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); }
+        #cursor-ring { position: fixed; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; mix-blend-mode: difference; }
+        @media (hover: none) { #cursor-dot, #cursor-ring { display: none; } }
+
+        /* --- NAVIGATION --- */
+        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 1.5rem 4vw; display: flex; justify-content: space-between; align-items: center; z-index: 1000; backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); background: rgba(22, 22, 24, 0.5); }
+        .nav-link { color: #fff; text-decoration: none; margin-left: 2rem; position: relative; padding: 5px 0; display: inline-block; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 1px; background: #fff; transition: 0.3s; }
+        .nav-link:hover::after { width: 100%; }
+        #live-clock { color: var(--fg); font-weight: bold; }
+        @media (max-width: 768px) { .nav-links-container { display: none; } }
+
+        /* --- SCROLL REVEAL ANIMATIONS --- */
+        .reveal { opacity: 0; transform: translateY(60px); transition: opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; } .delay-3 { transition-delay: 0.3s; } .delay-4 { transition-delay: 0.4s; }
+
+        /* --- HERO --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10vw; position: relative; }
+        .hero h1 { font-size: clamp(4rem, 10vw, 12rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.9; text-transform: uppercase; margin-bottom: 1rem; mix-blend-mode: difference; }
+        .hero-meta { border-left: 2px solid #fff; padding-left: 2rem; margin-bottom: 2rem; mix-blend-mode: difference; }
+
+        /* --- DATA GRID --- */
+        .grid-section { padding: 10vh 10vw; border-top: 1px solid var(--border); position: relative; z-index: 10; }
+        .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 3rem; }
+        .data-card { background: var(--bg); padding: 3rem; transition: background 0.3s, transform 0.3s; position: relative; }
+        .data-card:hover { background: #000; transform: translateY(-5px); }
+        .data-card h3 { margin: 1rem 0; font-size: 1.8rem; font-weight: 300; }
+        .data-card p { color: #aaa; line-height: 1.6; }
+
+        /* --- PROVINCES (JS PINNED HORIZONTAL LERP) --- */
+        .h-scroll-container { position: relative; z-index: 10; height: 350vh; /* This creates the scroll runway */ }
+        .h-sticky { display: flex; align-items: center; height: 100vh; overflow: hidden; will-change: transform; }
+        .h-track { display: flex; gap: 5vw; padding: 0 10vw; will-change: transform; }
+        .province-box {
+            min-width: 600px; height: 70vh; 
+            background: linear-gradient(135deg, rgba(20,20,22,0.9), rgba(10,10,12,0.9)), var(--glass);
+            border: 1px solid var(--border); backdrop-filter: blur(15px); padding: 4rem; display: flex; flex-direction: column; justify-content: space-between;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .province-box h2 { font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 200; mix-blend-mode: exclusion; }
+
+        @media (max-width: 768px) {
+            .h-scroll-container { height: auto; }
+            .h-sticky { height: auto; display: block; }
+            .h-track { flex-direction: column; padding: 10vh 5vw; gap: 2rem; }
+            .province-box { min-width: 100%; height: auto; min-height: 50vh; padding: 2rem; }
+            #smooth-wrapper { position: relative; transform: none !important; } 
+        }
+
+        /* --- FLAG SECTION --- */
+        .flag-hero { height: 80vh; display: flex; align-items: center; justify-content: center; background: transparent; position: relative; border-top: 1px solid var(--border); z-index: 10; }
+        .flag-canvas { width: 100%; max-width: 400px; height: 250px; position: relative; box-shadow: 0 0 80px rgba(0,0,0,0.8); display: flex; flex-direction: column; border: 1px solid var(--border); }
+        .flag-sun { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: var(--y); border-radius: 50%; box-shadow: 0 0 40px rgba(255, 204, 0, 0.4); z-index: 2; }
+
+        /* --- BUTTONS --- */
+        .btn { background: transparent; border: 1px solid #fff; color: #fff; padding: 1rem 2rem; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.2em; transition: all 0.3s; margin-top: 1rem; display: inline-block; position: relative; overflow: hidden; cursor: none; }
+        .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: #fff; transition: 0.3s; z-index: -1; }
+        .btn:hover::before { left: 0; }
+        .btn:hover { color: #000; }
+
+        /* --- TERMINAL OVERLAY --- */
+        #terminal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); z-index: 100000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+        #terminal-overlay.active { opacity: 1; pointer-events: all; }
+        .terminal-window { width: 90%; max-width: 900px; height: 80vh; border: 1px solid var(--border); background: #050505; display: flex; flex-direction: column; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
+        .term-header { display: flex; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid var(--border); background: #111; }
+        .term-body { padding: 2rem; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 2rem; }
+        .term-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: none; transition: color 0.3s; }
+        .term-close:hover { color: #ff3333; }
+        .progress-bar-container { width: 100%; height: 4px; background: #222; margin-top: 0.5rem; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: #fff; transition: width 2s cubic-bezier(0.1, 0.8, 0.3, 1); }
+        .log-output { font-family: monospace; color: #0f0; font-size: 0.85rem; white-space: pre-line; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+
+    <svg style="display: none;">
+        <defs>
+            <filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10" result="goo" /><feBlend in="SourceGraphic" in2="goo" /></filter>
+        </defs>
+    </svg>
+    <canvas id="ink-canvas"></canvas>
+    
+    <div id="cursor-dot"></div><div id="cursor-ring"></div>
+
+    <nav>
+        <div class="mono" style="color:#fff">AETHERION // <span id="live-clock">00:00:00</span></div>
+        <div class="nav-links-container">
+            <a href="#lore" class="nav-link mono mag-target">Protocol</a>
+            <a href="#provinces" class="nav-link mono mag-target">Territories</a>
+            <a href="#flag" class="nav-link mono mag-target">Alignment</a>
+        </div>
+    </nav>
+
+    <div id="smooth-wrapper">
+        <section class="hero reveal">
+            <div class="hero-meta">
+                <p class="mono" style="color:#aaa;">Current Era: Utopian Post-Collapse</p>
+                <p class="mono" style="color:#aaa;">Coordinates: 30°–40° N // Mediterranean</p>
+                <p class="mono" id="hero-hash" style="color: #666; margin-top:0.5rem;">SYS_HASH: 0x...</p>
+            </div>
+            <h1 id="hero-title">Aetherion</h1>
+            <p class="mono" style="max-width: 400px; color: #888;">A techno-ecological superstate where truth dictates form and nature guides the machine.</p>
+        </section>
+
+        <section class="grid-section" id="lore">
+            <div class="mono reveal" style="margin-bottom: 2rem;">Mainframe // Civic_Structure</div>
+            <div class="data-grid">
+                <div class="data-card reveal delay-1"><span class="mono">01 // Leadership</span><h3>Supreme Council</h3><p>Democratic Republic structure led by the Supreme Leader and balanced by the Council of Wisdom.</p></div>
+                <div class="data-card reveal delay-2"><span class="mono">02 // Demographics</span><h3>180,000,000</h3><p>Citizens registered within Nova Sanctum and sub-sectors. Steady growth under optimal conditions.</p></div>
+                <div class="data-card reveal delay-3"><span class="mono">03 // Economy</span><h3>Resource_Zenith</h3><p>Harmonized techno-ecology utilizing Solar, Wind, Fresh Water, and Silicon Crystals.</p></div>
+                <div class="data-card reveal delay-4"><span class="mono">04 // Social</span><h3>The Oasis</h3><p>Decentralized citizen network. Culture deeply rooted in Truth, Unity, and High-Faith.</p></div>
+            </div>
+        </section>
+
+        <div class="h-scroll-container reveal" id="provinces">
+            <div class="h-sticky" id="h-sticky">
+                <div class="h-track" id="track">
+                    <div class="province-box">
+                        <div><div class="mono">SEC_01 // Capital</div><h2>Nova Sanctum</h2></div>
+                        <p style="color:#aaa;">The architectural heart. Silicon skyscrapers intertwined with bioluminescent vines.</p>
+                        <button class="btn mag-target" onclick="openTerminal('NOVA SANCTUM', ['Access Granted.', 'Population verified: 180M.'])">Sync Node</button>
+                    </div>
+                    <div class="province-box">
+                        <div><div class="mono">SEC_02 // Coastal</div><h2>Lumora</h2></div>
+                        <p style="color:#aaa;">The shimmering port on the Halo Sea. Hub of global trade.</p>
+                        <button class="btn mag-target" onclick="openTerminal('LUMORA', ['Tidal arrays: 100%.', 'Trade manifests loaded.'])">Sync Node</button>
+                    </div>
+                    <div class="province-box">
+                        <div><div class="mono">SEC_03 // Biotech</div><h2>Helix Prime</h2></div>
+                        <p style="color:#aaa;">Where genetic truth meets silicon life. Flora restoration facilities.</p>
+                        <button class="btn mag-target" onclick="openTerminal('HELIX PRIME', ['Flora-Link established.', 'Oxygen: MAXIMUM.'])">Sync Node</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="grid-section">
+            <div class="mono reveal" style="margin-bottom: 2rem;">Infrastructure // Mobility</div>
+            <div class="data-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="data-card reveal delay-1"><h4>Hover Trains</h4><p class="mono" style="margin-top:0.5rem; color:#aaa;">Magnetic rail.</p></div>
+                <div class="data-card reveal delay-2"><h4>Hover Bikes</h4><p class="mono" style="margin-top:0.5rem; color:#aaa;">Anti-gravity transit.</p></div>
+                <div class="data-card reveal delay-3"><h4>Drones</h4><p class="mono" style="margin-top:0.5rem; color:#aaa;">Autonomous air.</p></div>
+                <div class="data-card reveal delay-4"><h4>Teleportation</h4><p class="mono" style="margin-top:0.5rem; color:#aaa;">Quantum node.</p></div>
+            </div>
+        </section>
+
+        <section class="flag-hero reveal" id="flag">
+            <div style="text-align:center; width: 100%; display:flex; flex-direction: column; align-items: center; padding: 0 2rem;">
+                <div class="mono" style="margin-bottom: 2rem;">Alignment // Flag</div>
+                <div class="flag-canvas mag-target reveal delay-1">
+                    <div style="flex:1; background:var(--y)"></div>
+                    <div style="flex:1; background:var(--g)"></div>
+                    <div style="flex:1; background:var(--b)"></div>
+                    <div class="flag-sun"></div>
+                </div>
+                <h2 class="reveal delay-2" style="margin-top:3rem; font-weight: 200; font-size: clamp(2rem, 5vw, 3rem);">TRUTH LIGHTS OUR PATH</h2>
+            </div>
+        </section>
+    </div>
+
+    <div id="terminal-overlay">
+        <div class="terminal-window">
+            <div class="term-header">
+                <div class="mono" id="term-title" style="color: #fff;">AETH_OS // TERMINAL</div>
+                <button class="term-close mag-target" onclick="closeTerminal()">×</button>
+            </div>
+            <div class="term-body">
+                <div>
+                    <div class="mono" style="display:flex; justify-content: space-between;"><span>DATA_UPLINK</span><span id="term-status">CONNECTING...</span></div>
+                    <div class="progress-bar-container"><div class="progress-bar" id="term-progress"></div></div>
+                </div>
+                <div class="log-output" id="term-log"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. UNIVERSAL SMOOTH SCROLL, PINNING & PHYSICS ENGINE ---
+        const smoothWrapper = document.getElementById('smooth-wrapper');
+        const track = document.getElementById('track');
+        const hContainer = document.getElementById('provinces');
+        const hSticky = document.getElementById('h-sticky');
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        let currentVScroll = 0; 
+        let targetVScroll = 0;  
+        let currentHScroll = 0; 
+        let targetHScroll = 0;  
+
+        // Set body height to match the wrapper so native scrollbar exists
+        function setBodyHeight() {
+            if (window.innerWidth > 768) {
+                document.body.style.height = smoothWrapper.getBoundingClientRect().height + 'px';
+            } else {
+                document.body.style.height = 'auto'; 
+            }
+        }
+        
+        // Wait briefly for fonts/layout to settle before calculating height
+        window.addEventListener('load', () => setTimeout(setBodyHeight, 100));
+        window.addEventListener('resize', setBodyHeight);
+
+        function renderPhysics() {
+            if (window.innerWidth > 768) {
+                // 1. Vertical Glide Physics 
+                targetVScroll = window.scrollY;
+                currentVScroll += (targetVScroll - currentVScroll) * 0.08;
+                
+                smoothWrapper.style.transform = `translate3d(0, -${currentVScroll}px, 0)`;
+
+                // 2. The Pinning Engine (Fixes the overlapping bug)
+                const offsetTop = hContainer.offsetTop;
+                const pinDuration = hContainer.offsetHeight - window.innerHeight;
+
+                // We counter-translate the horizontal box DOWN by the exact amount the page moves UP
+                let pinY = 0;
+                if (currentVScroll > offsetTop && currentVScroll < offsetTop + pinDuration) {
+                    pinY = currentVScroll - offsetTop; 
+                } else if (currentVScroll >= offsetTop + pinDuration) {
+                    pinY = pinDuration; // Lock it to bottom when finished
+                }
+                hSticky.style.transform = `translate3d(0, ${pinY}px, 0)`;
+
+                // 3. Horizontal Glide Physics
+                if (targetVScroll >= offsetTop && targetVScroll <= offsetTop + pinDuration) {
+                    let progress = (targetVScroll - offsetTop) / pinDuration;
+                    targetHScroll = progress * (track.scrollWidth - window.innerWidth + (window.innerWidth * 0.1));
+                } else if (targetVScroll < offsetTop) {
+                    targetHScroll = 0;
+                } else {
+                    targetHScroll = track.scrollWidth - window.innerWidth + (window.innerWidth * 0.1);
+                }
+
+                currentHScroll += (targetHScroll - currentHScroll) * 0.04;
+                track.style.transform = `translate3d(-${currentHScroll}px, 0, 0)`;
+
+                // 4. Custom Intersection Engine 
+                revealElements.forEach(el => {
+                    const rect = el.getBoundingClientRect(); 
+                    if (rect.top < window.innerHeight * 0.85) { el.classList.add('active'); }
+                });
+
+            } else {
+                // Mobile native scroll reveals
+                revealElements.forEach(el => {
+                    if (el.getBoundingClientRect().top < window.innerHeight * 0.85) { el.classList.add('active'); }
+                });
+            }
+            requestAnimationFrame(renderPhysics);
+        }
+        renderPhysics();
+
+
+        // --- 2. ADVANCED LIQUID OBSIDIAN (VELOCITY PAINT + EXPLOSIONS) ---
+        const inkCanvas = document.getElementById('ink-canvas');
+        const ictx = inkCanvas.getContext('2d');
+        let paintDrops = [];
+        let lastX = window.innerWidth / 2, lastY = window.innerHeight / 2;
+
+        function resizeCanvas() { inkCanvas.width = window.innerWidth; inkCanvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
+
+        window.addEventListener('mousemove', (e) => {
+            let dx = e.clientX - lastX, dy = e.clientY - lastY;
+            let speed = Math.min(Math.sqrt(dx * dx + dy * dy), 50); 
+            lastX = e.clientX; lastY = e.clientY;
+
+            paintDrops.push({ x: e.clientX, y: e.clientY, radius: Math.random() * 15 + 20, life: 1, vx: dx * 0.02, vy: dy * 0.02, gravity: 0.1, growth: Math.random() * 0.5 + 0.1 });
+
+            if (speed > 15) {
+                let splatterCount = Math.floor(speed / 5);
+                for(let i=0; i<splatterCount; i++) {
+                    paintDrops.push({ x: e.clientX + (Math.random() - 0.5) * speed * 2, y: e.clientY + (Math.random() - 0.5) * speed * 2, radius: Math.random() * 8 + 5, life: 1, vx: dx * (Math.random() * 0.1) + (Math.random()-0.5)*2, vy: dy * (Math.random() * 0.1) + (Math.random()-0.5)*2, gravity: 0.2, growth: 0 });
+                }
+            }
+        });
+
+        window.addEventListener('mousedown', (e) => {
+            for(let i=0; i<40; i++) {
+                let angle = Math.random() * Math.PI * 2; let force = Math.random() * 25 + 5; 
+                paintDrops.push({ x: e.clientX, y: e.clientY, radius: Math.random() * 12 + 6, life: 1, vx: Math.cos(angle) * force, vy: Math.sin(angle) * force, gravity: 0.4, growth: 0 });
+            }
+        });
+
+        function animatePaint() {
+            ictx.clearRect(0, 0, inkCanvas.width, inkCanvas.height);
+            for (let i = 0; i < paintDrops.length; i++) {
+                let p = paintDrops[i];
+                p.vy += p.gravity; p.x += p.vx; p.y += p.vy; p.radius += p.growth; p.life -= 0.012; 
+                if (p.life <= 0) { paintDrops.splice(i, 1); i--; continue; }
+                ictx.beginPath(); ictx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ictx.fillStyle = `rgba(0, 0, 0, ${p.life})`; ictx.fill();
+            }
+            requestAnimationFrame(animatePaint);
+        }
+        animatePaint();
+
+
+        // --- 3. CUSTOM CURSOR ---
+        const dot = document.getElementById('cursor-dot'); const ring = document.getElementById('cursor-ring');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2; let ringX = mouseX, ringY = mouseY;
+
+        if (window.matchMedia("(hover: hover)").matches) {
+            window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; dot.style.left = mouseX + 'px'; dot.style.top = mouseY + 'px'; });
+            function animateCursor() {
+                ringX += (mouseX - ringX) * 0.2; ringY += (mouseY - ringY) * 0.2; ring.style.left = ringX + 'px'; ring.style.top = ringY + 'px'; requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+            document.querySelectorAll('.mag-target').forEach(el => {
+                el.addEventListener('mousemove', (e) => { const rect = el.getBoundingClientRect(); ring.style.width = rect.width + 20 + 'px'; ring.style.height = rect.height + 20 + 'px'; ring.style.borderRadius = '8px'; ring.style.borderColor = 'rgba(255,255,255,0.8)'; });
+                el.addEventListener('mouseleave', () => { ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderRadius = '50%'; ring.style.borderColor = 'rgba(255,255,255,0.3)'; });
+            });
+        }
+
+        // --- 4. AUDIO & TERMINAL ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext; let audioCtx;
+        function initAudio() { if (!audioCtx) { audioCtx = new AudioContext(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } }
+        function playBeep(freq, type, duration, vol) {
+            if (!audioCtx) return; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime); gain.gain.setValueAtTime(vol, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + duration);
+        }
+
+        document.body.addEventListener('click', () => initAudio(), { once: true });
+        setInterval(() => { const now = new Date(); document.getElementById('live-clock').innerText = now.toLocaleTimeString('en-US', { hour12: false }) + " // ONL"; const hash = Math.random().toString(16).substr(2, 8).toUpperCase(); document.getElementById('hero-hash').innerText = `SYS_HASH: 0x${hash}`; }, 2000);
+
+        const termOverlay = document.getElementById('terminal-overlay'), termTitle = document.getElementById('term-title'), termLog = document.getElementById('term-log'), termProg = document.getElementById('term-progress'), termStatus = document.getElementById('term-status'); let typeInt;
+
+        function openTerminal(node, logs) {
+            initAudio(); playBeep(300, 'sawtooth', 0.3, 0.1); termTitle.innerText = `NODE // ${node}`; termLog.innerHTML = ""; termProg.style.width = "0%"; termStatus.innerText = "HANDSHAKE INITIATED..."; termStatus.style.color = "#fff"; termOverlay.classList.add('active');
+            setTimeout(() => { termProg.style.width = "100%"; playBeep(600, 'sine', 0.8, 0.05); }, 100);
+            setTimeout(() => { termStatus.innerText = "SECURE CONNECTION ESTABLISHED"; termStatus.style.color = "#0f0"; playBeep(1500, 'square', 0.1, 0.1); typeLogs(logs); }, 2100);
+        }
+
+        function typeLogs(logs) {
+            clearInterval(typeInt); let line = 0, char = 0; termLog.innerHTML = "";
+            typeInt = setInterval(() => {
+                if (line >= logs.length) { clearInterval(typeInt); return; }
+                if (char === 0) { termLog.innerHTML += `> `; playBeep(800, 'triangle', 0.05, 0.02); }
+                if (char < logs[line].length) { termLog.innerHTML += logs[line].charAt(char); char++; if(Math.random() > 0.5) playBeep(1000 + (Math.random()*200), 'sine', 0.02, 0.01); } 
+                else { termLog.innerHTML += `<br><br>`; line++; char = 0; }
+            }, 30);
+        }
+        function closeTerminal() { playBeep(400, 'sawtooth', 0.2, 0.1); termOverlay.classList.remove('active'); clearInterval(typeInt); }
+    </script>
+</body>
+</html>
