@@ -1,66 +1,75 @@
 # AETHERION // SOVEREIGN_OS
 
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Live%20Mainframe-00ff9f)](https://github.com/YOUR_USERNAME/aetherion)
-
-A cinematic, high-fidelity single-page landing experience for **Aetherion** — a fictional techno-ecological superstate where truth, nature, and advanced technology exist in perfect harmony.
-
-> “Truth Lights Our Path”
-
----
-
-## 🌐 Live Demo
-[View the Aetherion Mainframe →](https://YOUR_USERNAME.github.io/aetherion) *(replace with your actual GitHub Pages link)*
+<div align="center">
+  <img src="https://via.placeholder.com/800x200/0a0a0a/ffffff?text=AETHERION" alt="Aetherion Banner" width="100%" style="border-radius: 8px; border: 1px solid #222;">
+  <br><br>
+  <strong>A cinematic single-page landing experience for the mythical nation of Aetherion</strong>
+  <br>
+  <em>“Truth Lights Our Path”</em>
+</div>
 
 ---
 
-## ✨ Features
+## 🌌 Experience the Mainframe
 
-- **Immersive Boot Sequence** with live population verification (180 million citizens)
-- **Custom Magnetic Cursor** with hover physics
-- **Liquid Obsidian Background** — dark 2D lava-lamp style fluid simulation that reacts to your mouse
-- **Hyper-Glide Horizontal Provinces** with buttery momentum scrolling and perfect pinning
-- **Interactive Terminal Nodes** — click any city to open a full-screen secure data uplink with typing effects and synth audio
-- **Pure CSS National Flag** with official color meanings
-- **Smooth Universal Momentum Scroll** (vertical + horizontal physics engine)
-- **Scroll-triggered Reveals** with staggered delays
-- **Live System Clock** + randomized SYS_HASH
-- **Fully Responsive** — graceful degradation on mobile
-- **Web Audio API** — procedural UI beeps and terminal sounds (no external files)
+A high-fidelity, immersive digital showcase for **Aetherion** — a fictional techno-ecological superstate where advanced technology and nature exist in perfect harmony.
+
+Built with custom physics, fluid simulations, and cinematic interactions to make you feel like you're accessing a real sovereign system.
 
 ---
 
-## 📍 Official Aetherion Profile
+### ✨ Key Features
 
-**Population:** 180,000,000 (steadily growing)  
-**Capital:** Nova Sanctum  
-**Major Cities:** Lumora (coastal trade port), Helix Prime, Unity Haven  
-**Motto:** “Truth Lights Our Path”
-
-**Government:** Democratic Republic led by a Supreme Leader (acting as president) and the Council of Wisdom — a single unified sovereign government.
-
-**Climate:** Mild Mediterranean-style (30°–40° N) with advanced climate-control technology. A true techno-ecological superstate where progress and nature are perfectly harmonized.
-
-**Key Resources:** Solar energy, Wind energy, Rare earth metals, Fresh water, Silicon crystals
-
-**Culture:** Values **Truth • Unity • Faith**. Citizens primarily work in technology, renewable energy, medicine, education, and environmental stewardship. Ideas flow freely through **the Oasis** — a decentralized citizen network.
-
-**Transportation:** Hover Trains, Hover Bikes, Personal Drones, Quantum Teleportation
-
-**Geography:**
-- **Landforms:** Skyreach Mountain Range, Glasswind Plains (major wind energy zone), Solaris Plateau, Eden Valley, Obsidian Coast
-- **Bodies of Water:** Halo Sea, Lake Veritas
+- **Atmospheric Boot Sequence** referencing the 180 million citizens
+- **Reactive Liquid Obsidian Background** — dark, smooth 2D fluid simulation (lava-lamp style) that responds to your mouse
+- **Magnetic Custom Cursor** with hover effects
+- **Hyper-Glide Horizontal Provinces** with buttery momentum and perfect section pinning
+- **Interactive Terminal Uplinks** — click any city to open a full-screen secure data terminal with typing animation and procedural audio
+- **Pure CSS National Flag** with official color symbolism
+- **Universal Smooth Momentum Scrolling** (both vertical and horizontal)
+- **Live System Clock** + dynamic SYS_HASH generator
+- **Scroll-triggered cinematic reveals**
+- Fully responsive with graceful mobile fallback
 
 ---
 
-## 🛠 Tech Stack
+## 📍 Official Nation Profile
 
-- Pure HTML5 + CSS3 + Vanilla JavaScript
-- Canvas-based fluid background simulation
-- CSS Grid + Flexbox + Scroll-driven animations
-- Web Audio API for procedural sound design
+**Population** — 180,000,000 (steadily growing)  
+**Capital** — Nova Sanctum  
+**Major Cities** — Lumora (coastal trade port), Helix Prime, Unity Haven  
+
+**Motto** — “Truth Lights Our Path”
+
+**Government** — Democratic Republic led by a Supreme Leader (acting as president) and guided by the Council of Wisdom. A single unified sovereign government.
+
+**Climate** — Mild Mediterranean (30°–40° N) enhanced by climate-control technology. A true techno-ecological superstate where progress and nature are perfectly harmonized.
+
+**Key Resources** — Solar energy, Wind energy, Rare earth metals, Fresh water, Silicon crystals
+
+**Culture** — Deeply rooted in **Truth • Unity • Faith**. Citizens primarily work in technology, renewable energy, medicine, education, and environmental care. Ideas are freely exchanged through **the Oasis** network.
+
+**Transportation** — Hover Trains, Hover Bikes, Personal Drones, Quantum Teleportation
+
+**Geography**  
+**Landforms:** Skyreach Mountain Range, Glasswind Plains (major wind energy zone), Solaris Plateau, Eden Valley, Obsidian Coast  
+**Bodies of Water:** Halo Sea, Lake Veritas
+
+---
+
+## 🛠 Built With
+
+- Pure HTML5, CSS3 & Vanilla JavaScript  
+- Canvas-based fluid background simulation  
+- Advanced scroll physics & pinning engine  
+- Web Audio API for procedural UI sounds  
 - No frameworks or external dependencies
 
 ---
 
-## 📁 Project Structure
+## 🚀 Quick Start
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/aetherion.git
+   cd aetherion
