@@ -6,70 +6,63 @@
   <strong>A cinematic single-page landing experience for the mythical nation of Aetherion</strong>
   <br>
   <em>“Truth Lights Our Path”</em>
+  <br><br>
+  <small><em>Note: This project was developed as an assignment for a Computer Science course.</em></small>
 </div>
 
 ---
 
-## 🌌 Experience the Mainframe
+## Project Overview
 
-A high-fidelity, immersive digital showcase for **Aetherion** — a fictional techno-ecological superstate where advanced technology and nature exist in perfect harmony.
+A high-fidelity, immersive digital showcase for **Aetherion** — a fictional techno-ecological superstate where advanced technology and nature exist in perfect harmony. 
 
-Built with custom physics, fluid simulations, and cinematic interactions to feel like you're accessing a real sovereign system.
-
----
-
-### ✨ Key Features
-
-- Atmospheric boot sequence with 180 million population reference
-- Reactive dark lava-lamp style fluid background (reacts to mouse)
-- Magnetic custom cursor with hover effects
-- Smooth hyper-glide horizontal provinces with momentum
-- Interactive terminal uplinks for each city (with typing sounds)
-- Pure CSS national flag
-- Universal smooth momentum scrolling
-- Live system clock + dynamic SYS_HASH
-- Fully responsive
+This project was built to demonstrate custom physics, fluid simulations, and cinematic web interactions, creating the illusion of accessing a real sovereign operating system.
 
 ---
 
-## 📍 Official Nation Profile
+## Key Features
 
-**Population** — 180,000,000 (steadily growing)  
-**Capital** — Nova Sanctum  
-**Major Cities** — Lumora, Helix Prime, Unity Haven  
-
-**Motto** — “Truth Lights Our Path”
-
-**Government** — Democratic Republic led by a Supreme Leader and the Council of Wisdom.
-
-**Climate** — Mild Mediterranean (30°–40° N) with climate-control technology.
-
-**Resources** — Solar & wind energy, rare earth metals, fresh water, silicon crystals.
-
-**Culture** — Values Truth, Unity, and Faith. Ideas flow through **the Oasis** network.
-
-**Transportation** — Hover Trains, Hover Bikes, Personal Drones, Quantum Teleportation.
-
-**Geography**  
-- Landforms: Skyreach Mountain Range, Glasswind Plains, Solaris Plateau, Eden Valley, Obsidian Coast  
-- Waters: Halo Sea, Lake Veritas
+* **Atmospheric Boot Sequence:** Includes a dynamic 180 million population reference.
+* **Reactive Background:** Fluid, dark lava-lamp style background that reacts to cursor movement.
+* **Custom UI Elements:** Magnetic custom cursor with distinct hover effects.
+* **Advanced Navigation:** Smooth momentum scrolling with hyper-glide horizontal provinces.
+* **Interactive Terminals:** Interactive city uplinks featuring procedural typing sounds.
+* **System Details:** Live system clock and dynamic SYS_HASH generation.
+* **Visual Assets:** Pure CSS-rendered national flag.
+* **Responsive Design:** Fully fluid and responsive across screen sizes.
 
 ---
 
-## 🛠 Built With
+## Official Nation Profile
 
-- Pure HTML5 + CSS3 + Vanilla JavaScript  
-- Canvas fluid simulation  
-- Scroll physics & pinning engine  
-- Web Audio API (procedural sounds)  
+* **Population:** 180,000,000 (steadily growing)  
+* **Capital:** Nova Sanctum  
+* **Major Cities:** Lumora, Helix Prime, Unity Haven  
+* **Motto:** “Truth Lights Our Path”  
+* **Government:** Democratic Republic led by a Supreme Leader and the Council of Wisdom.  
+* **Climate:** Mild Mediterranean (30°–40° N) with climate-control technology.  
+* **Resources:** Solar & wind energy, rare earth metals, fresh water, silicon crystals.  
+* **Culture:** Values Truth, Unity, and Faith. Ideas flow through the **Oasis** network.  
+* **Transportation:** Hover Trains, Hover Bikes, Personal Drones, Quantum Teleportation.  
 
-No frameworks. Zero dependencies.
+**Geography:** * **Landforms:** Skyreach Mountain Range, Glasswind Plains, Solaris Plateau, Eden Valley, Obsidian Coast  
+* **Waters:** Halo Sea, Lake Veritas  
 
 ---
 
-## 🚀 How to Run
+## Technologies Used
 
-1. Clone the repo:
+* Pure HTML5, CSS3, and Vanilla JavaScript  
+* Canvas API (for fluid simulation)  
+* Web Audio API (for procedural sounds)
+* Custom scroll physics & pinning engine  
+
+*Note: Built entirely from scratch with zero frameworks and no external dependencies.*
+
+---
+
+## Installation & Setup
+
+1. Clone the repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/aetherion.git
-   cd aetherion
+   git clone [https://github.com/YOUR_USERNAME/aetherion.git](https://github.com/YOUR_USERNAME/aetherion.git)
